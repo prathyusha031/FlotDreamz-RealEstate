@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQs - Flot Dreamz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .faq {
+            margin-bottom: 20px;
+        }
+        .faq h3 {
+            color:rgb(93, 141, 193);
+            cursor: pointer;
+        }
+        .faq p {
+            display: none;
+            color: #555;
+            margin-top: 5px;
+        }
+    </style>
+    <script>
+        function toggleFAQ(id) {
+            var answer = document.getElementById(id);
+            if (answer.style.display === "block") {
+                answer.style.display = "none";
+            } else {
+                answer.style.display = "block";
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Frequently Asked Questions</h1>
+        <div class="faq">
+            <h3 onclick="toggleFAQ('faq1')">1. How do I list my property on Flot Dreamz?</h3>
+            <p id="faq1">To list your property, sign up for an account, navigate to the 'Sell' section, and fill in the required details with images.</p>
+        </div>
+        <div class="faq">
+            <h3 onclick="toggleFAQ('faq2')">2. What payment methods do you accept?</h3>
+            <p id="faq2">We accept credit/debit cards, PayPal, and other online payment methods.</p>
+        </div>
+        <div class="faq">
+            <h3 onclick="toggleFAQ('faq3')">3. Can I cancel my property listing?</h3>
+            <p id="faq3">Yes, you can cancel or modify your listing anytime from your dashboard.</p>
+        </div>
+        <div class="faq">
+            <h3 onclick="toggleFAQ('faq4')">4. Do you charge any commission?</h3>
+            <p id="faq4">No, we do not charge any commission on property listings.</p>
+        </div>
+    </div>
+</body>
+</html>

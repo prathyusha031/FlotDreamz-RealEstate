@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>{{ property.title }}</h1>
+<img src="{{ property.image.url }}" width="300">
+<p><strong>Location:</strong> {{ property.location }}</p>
+<p><strong>Price:</strong> ₹{{ property.price }}</p>
+<p>{{ property.description }}</p>
+
+<h3>Send Inquiry</h3>
+<form method="post">
+    {% csrf_token %}
+    <input type="text" name="name" placeholder="Your name" required><br>
+    <input type="email" name="email" placeholder="Your email" required><br>
+    <textarea name="message" placeholder="Message" required></textarea><br>
+    <button type="submit">Send Inquiry</button>
+</form>
+{% endblock %}

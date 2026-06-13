@@ -1,0 +1,154 @@
+{% extends "home.html" %}
+{% load static %}
+
+{% block content %}
+<style>
+    .signup-wrapper {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f8f9fa;
+        padding: 2rem 1rem;
+    }
+    .form-label span {
+        color: red;
+    }
+</style>
+
+<div class="signup-wrapper">
+    <div class="card shadow-lg border-0 rounded-4 p-4" style="width: 100%; max-width: 500px;">
+        <h2 class="text-center mb-4">Create Your Account</h2>
+        <form method="POST" action="{% url 'signup' %}" novalidate>
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+            {% endif %}
+
+            <!-- Full Name -->
+            <div class="mb-3">
+                <label for="fullname" class="form-label">Full Name <span>*</span></label>
+                <input type="text" class="form-control" id="fullname" name="fullname" placeholder="Enter your full name" required>
+            </div>
+
+            <!-- Email + OTP -->
+            <div class="mb-3">
+                <label for="email" class="form-label">Email <span>*</span></label>
+                <div class="d-flex">
+                    <input type="email" class="form-control me-2" id="email" name="email" placeholder="Enter your email" required>
+                    <button type="button" class="btn btn-outline-primary" onclick="sendOtp()">Send OTP</button>
+                </div>
+                <p id="email-msg" class="form-text text-muted mt-1"></p>
+            </div>
+
+            <!-- OTP Field -->
+            <div id="otp-section" class="mb-3" style="display: none;">
+                <label for="otp" class="form-label">Enter OTP</label>
+                <div class="d-flex">
+                    <input type="text" class="form-control me-2" id="otp" name="otp" placeholder="Enter the OTP">
+                    <button type="button" class="btn btn-outline-success" onclick="verifyOtp()" id="verify-btn" style="display: none;">Verify OTP</button>
+                </div>
+                <p id="otp-msg" class="form-text mt-1"></p>
+            </div>
+
+            <!-- Password -->
+            <div class="mb-3">
+                <label for="password" class="form-label">Password <span>*</span></label>
+                <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="mb-3">
+                <label for="confirm_password" class="form-label">Confirm Password <span>*</span></label>
+                <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Re-enter your password" required>
+            </div>
+
+            <!-- Terms and Conditions -->
+            <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" id="terms" name="terms" required>
+                <label class="form-check-label" for="terms">
+                    I agree to the <a href="#">Terms and Conditions</a>
+                </label>
+            </div>
+
+            <!-- Submit -->
+            <button type="submit" class="btn btn-primary w-100">Sign Up</button>
+        </form>
+
+        <div class="text-center mt-3">
+            <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript for OTP -->
+<script>
+    function sendOtp() {
+        const emailInput = document.getElementById('email');
+        const email = emailInput.value.trim();
+        const otpSection = document.getElementById('otp-section');
+        const emailMsg = document.getElementById('email-msg');
+        const verifyBtn = document.getElementById('verify-btn');
+
+        if (email && email.includes('@') && email.includes('.')) {
+            fetch("{% url 'send_email_otp' %}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    "X-CSRFToken": "{{ csrf_token }}"
+                },
+                body: new URLSearchParams({ email })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === "success") {
+                    otpSection.style.display = 'block';
+                    verifyBtn.style.display = 'inline-block';
+                    emailMsg.textContent = "OTP sent to your email.";
+                    emailMsg.className = "form-text text-success mt-1";
+                } else {
+                    emailMsg.textContent = data.message || "Failed to send OTP.";
+                    emailMsg.className = "form-text text-danger mt-1";
+                }
+            })
+            .catch(err => {
+                emailMsg.textContent = "Something went wrong.";
+                emailMsg.className = "form-text text-danger mt-1";
+            });
+        } else {
+            emailMsg.textContent = "Please enter a valid email address.";
+            emailMsg.className = "form-text text-danger mt-1";
+        }
+    }
+
+    function verifyOtp() {
+        const otpInput = document.getElementById('otp');
+        const otp = otpInput.value.trim();
+        const otpMsg = document.getElementById('otp-msg');
+
+        fetch("{% url 'verify_email_otp' %}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "X-CSRFToken": "{{ csrf_token }}"
+            },
+            body: new URLSearchParams({ otp })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.status === "success") {
+                otpMsg.textContent = "OTP verified successfully!";
+                otpMsg.className = "form-text text-success mt-1";
+            } else {
+                otpMsg.textContent = data.message || "Invalid OTP.";
+                otpMsg.className = "form-text text-danger mt-1";
+            }
+        })
+        .catch(err => {
+            otpMsg.textContent = "Something went wrong.";
+            otpMsg.className = "form-text text-danger mt-1";
+        });
+    }
+</script>
+{% endblock %}

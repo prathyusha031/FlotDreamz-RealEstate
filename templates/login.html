@@ -1,0 +1,111 @@
+{% extends "home.html" %}
+{% load static %}
+
+{% block content %}
+<style>
+    .login-wrapper {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f8f9fa;
+        padding: 2rem 1rem;
+    }
+
+    .login-card {
+        width: 100%;
+        max-width: 450px;
+        background: #fff;
+        border: none;
+        border-radius: 1rem;
+        padding: 2rem;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .login-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #343a40;
+    }
+
+    .btn-primary {
+        background-color: #c5a647;
+        border-color: #c5a647;
+    }
+
+    .btn-primary:hover {
+        background-color: #b5993c;
+        border-color: #b5993c;
+    }
+
+    a {
+        color: #c5a647;
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<div class="login-wrapper">
+    <div class="login-card">
+        <!-- Title -->
+        <h2 class="login-title text-center mb-4">Login to Your Account</h2>
+
+        <!-- Login Form -->
+        <form method="POST" action="{% url 'login' %}" novalidate>
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+
+            <!-- Username -->
+            <div class="mb-3">
+                <label for="username" class="form-label">Email or Username</label>
+                <input 
+                    type="text" 
+                    class="form-control" 
+                    id="username" 
+                    name="username" 
+                    placeholder="Enter your email or username" 
+                    required>
+            </div>
+
+            <!-- Password -->
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input 
+                    type="password" 
+                    class="form-control" 
+                    id="password" 
+                    name="password" 
+                    placeholder="Enter your password" 
+                    required>
+            </div>
+
+            <!-- Remember Me -->
+            <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" id="rememberMe" name="remember">
+                <label class="form-check-label" for="rememberMe">Remember Me</label>
+            </div>
+
+            <!-- Submit -->
+            <button type="submit" class="btn btn-primary w-100">Login</button>
+
+            {% if form.errors %}
+                <p class="text-danger mt-3 text-center">Invalid credentials. Please try again.</p>
+            {% endif %}
+        </form>
+
+        <!-- Links -->
+        <div class="text-center mt-4">
+            <p>Don't have an account? <a href="{% url 'signup' %}">Sign up</a></p>
+            <p><a href="#">Forgot your password?</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

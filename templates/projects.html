@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block main %}
+<div class="container" style="padding: 2rem;">
+    <h1 class="section-title" style="font-size: 2.5rem; color: #2c3e50; margin-bottom: 1rem;">🏗️ Our Featured Projects</h1>
+    <p style="font-size: 1.1rem; color: #555; margin-bottom: 2rem;">
+        Welcome to the Projects section of Flot Dreamz. Here you can explore some of our prime real estate developments designed for modern living and smart investments. Each project reflects our commitment to quality, innovation, and trust.
+    </p>
+
+    <div class="project-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+        <div class="project-card" style="background-color: #fff; border: 1px solid #ddd; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); overflow: hidden;">
+            <img src="https://via.placeholder.com/600x300?text=Skyline+Residency" alt="Skyline Residency" style="width: 100%; height: auto;">
+            <div style="padding: 1.2rem;">
+                <h2 style="color: #2c3e50; font-size: 1.5rem;">Skyline Residency</h2>
+                <p style="color: #555;">Modern 2 & 3 BHK apartments in central Raipur with rooftop garden, gym, and smart security systems.</p>
+                <p><strong>Status:</strong> <span style="color: #e67e22;">Under Construction</span></p>
+            </div>
+        </div>
+
+        <div class="project-card" style="background-color: #fff; border: 1px solid #ddd; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); overflow: hidden;">
+            <img src="https://via.placeholder.com/600x300?text=Green+Meadows+Villas" alt="Green Meadows Villas" style="width: 100%; height: auto;">
+            <div style="padding: 1.2rem;">
+                <h2 style="color: #2c3e50; font-size: 1.5rem;">Green Meadows Villas</h2>
+                <p style="color: #555;">Eco-friendly luxury villas in Durg with solar panels, rainwater harvesting, and private gardens.</p>
+                <p><strong>Status:</strong> <span style="color: #27ae60;">Possession Available</span></p>
+            </div>
+        </div>
+
+        <div class="project-card" style="background-color: #fff; border: 1px solid #ddd; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); overflow: hidden;">
+            <img src="https://via.placeholder.com/600x300?text=CityScape+Commercial+Park" alt="CityScape Commercial Park" style="width: 100%; height: auto;">
+            <div style="padding: 1.2rem;">
+                <h2 style="color: #2c3e50; font-size: 1.5rem;">CityScape Commercial Park</h2>
+                <p style="color: #555;">Premium commercial complex in Bhilai with smart offices, co-working spaces, and retail showrooms.</p>
+                <p><strong>Status:</strong> <span style="color: #2980b9;">Launching Soon</span></p>
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-top: 3rem; text-align: center;">
+        <p style="font-size: 1rem; color: #7f8c8d;">
+            For more information about our ongoing and upcoming projects, feel free to <a href="{% url 'contact' %}" style="color: #2980b9; text-decoration: none;">contact us</a> or visit our office.
+        </p>
+    </div>
+</div>
+{% endblock %}

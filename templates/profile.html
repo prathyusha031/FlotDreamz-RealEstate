@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/styles.css"> <!-- External CSS file for custom styles -->
+    <title>Profile - Flot Dreamz</title>
+</head>
+<body>
+    
+    {% if not user.is_authenticated %}
+        <script>window.location.href = "{% url 'login' %}";</script>
+    {% endif %}
+    
+    <section class="container mt-5 mb-5">
+        <div class="card shadow-lg p-4 text-center">
+            <h2 class="mb-3 text-primary">My Profile</h2>
+            <label for="profilePicInput" class="d-block position-relative">
+                <img src="{{ user.profile.image.url|default:'/static/user-avatar.png' }}" alt="" class="rounded-circle border border-2 p-1 mb-3" width="120" height="120" id="profilePicPreview">
+                <input type="file" id="profilePicInput" class="d-none" accept="image/*" onchange="previewProfilePic(event)">
+            </label>
+            <button class="btn btn-success mb-3" onclick="document.getElementById('profilePicInput').click();">Upload Profile Picture</button>
+            
+            <div class="row justify-content-center">
+                <div class="col-md-6 text-start">
+                    <p><strong>Name:</strong> {{ user.first_name }} {{ user.last_name }}</p>
+                    <p><strong>Email:</strong> {{ user.email }}</p>
+                    <p><strong>Phone:</strong> {{ user.profile.phone_number }}</p>
+                    <p><strong>Saved Properties:</strong></p>
+                    <p><strong>Property Preferences:</strong> {{ user.profile.preferences|default:"Not Set" }}</p>
+                </div>
+            </div>
+            <button class="btn btn-success mt-3" data-bs-toggle="modal" data-bs-target="#editProfileModal">Edit Profile</button>
+        </div>
+    </section>
+    
+    <!-- Edit Profile Modal -->
+    <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-primary" id="editProfileLabel">Edit Profile</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="{% url 'update_profile' %}" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="text-center mb-3">
+                            <label for="editProfilePicInput" class="d-block position-relative">
+                                <img src="{{ user.profile.image.url|default:'/static/user-avatar.png' }}" class="rounded-circle border border-2 p-1" width="100" height="100" id="editProfilePicPreview">
+                                <input type="file" id="editProfilePicInput" class="d-none" accept="image/*" name="profile_image" onchange="previewEditProfilePic(event)">
+                            </label>
+                            <button type="button" class="btn btn-secondary mt-2" onclick="document.getElementById('editProfilePicInput').click();">Change Profile Picture</button>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">First Name</label>
+                            <input type="text" class="form-control" name="first_name" value="{{ user.first_name }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Last Name</label>
+                            <input type="text" class="form-control" name="last_name" value="{{ user.last_name }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" name="email" value="{{ user.email }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Phone</label>
+                            <input type="text" class="form-control" name="phone" value="{{ user.profile.phone_number }}">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Property Preferences</label>
+                            <select class="form-select" name="preferences">
+                                <option value="apartment" {% if user.profile.preferences == "apartment" %}selected{% endif %}>Apartment</option>
+                                <option value="villa" {% if user.profile.preferences == "villa" %}selected{% endif %}>Villa</option>
+                                <option value="plot" {% if user.profile.preferences == "plot" %}selected{% endif %}>Plot</option>
+                                <option value="commercial" {% if user.profile.preferences == "commercial" %}selected{% endif %}>Commercial Property</option>
+                            </select>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-success">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript for Image Preview -->
+    <script>
+        function previewProfilePic(event) {
+            const reader = new FileReader();
+            reader.onload = function() {
+                document.getElementById('profilePicPreview').src = reader.result;
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        }
+
+        function previewEditProfilePic(event) {
+            const reader = new FileReader();
+            reader.onload = function() {
+                document.getElementById('editProfilePicPreview').src = reader.result;
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

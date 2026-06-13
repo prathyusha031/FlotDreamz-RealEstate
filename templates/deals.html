@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container" style="padding: 2rem;">
+    <h1 class="section-title">💸 Limited-Time Deals & Discounts</h1>
+    <p>Grab exclusive offers on properties before they’re gone! Save big on your next dream home or investment opportunity.</p>
+
+    {% for deal in deals %}
+    <div class="deal-entry" style="padding: 1.5rem; border: 1px solid #ccc; margin-bottom: 1.5rem; border-radius: 8px;">
+        <h2>{{ deal.title }}</h2>
+        <p>{{ deal.description }}</p>
+        <p><strong>Discount: {{ deal.discount_percent }}% OFF</strong></p>
+        <p><em>Valid Until: {{ deal.valid_until }}</em></p>
+    </div>
+    {% empty %}
+    <p>No deals are currently active. Please visit again soon!</p>
+    {% endfor %}
+
+    <div style="background-color: #e6f9ff; padding: 1rem; border-radius: 8px; margin-top: 2rem;">
+        <h3>💬 Need Help Finding the Right Deal?</h3>
+        <p>Contact our support team at <strong>support@flotdreamz.com</strong> or call us at <strong>+91-98765-43210</strong>.</p>
+        <a href="/contact/" style="text-decoration: underline;">Go to Contact Page</a>
+    </div>
+</div>
+{% endblock %}

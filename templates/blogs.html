@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container" style="padding: 2rem;">
+    <h1 class="section-title">🏠 Real Estate Blogs & Resources</h1>
+    <p>Explore tips, insights, and updates from real estate professionals to help guide your buying, selling, and investing journey.</p>
+
+    {% for blog in blogs %}
+    <div class="blog-entry" style="padding: 1.5rem; border: 1px solid #ccc; margin-bottom: 1.5rem; border-radius: 8px;">
+        <h2>{{ blog.title }}</h2>
+        <p><strong>Written by {{ blog.author }}</strong> • <em>{{ blog.created_at|date:"F j, Y" }}</em></p>
+        <p>{{ blog.content|truncatewords:80 }} <a href="#">Read more...</a></p>
+    </div>
+    {% empty %}
+    <p>No blog articles available. Please check back later.</p>
+    {% endfor %}
+
+    <div style="background-color: #f9f9f9; padding: 1rem; border-radius: 8px; margin-top: 2rem;">
+        <h3>📧 Stay Updated</h3>
+        <p>Subscribe to our newsletter to get the latest blog updates directly in your inbox.</p>
+        <form method="post" action="#">
+            <input type="email" placeholder="Enter your email" required style="padding: 0.5rem;">
+            <button type="submit" style="padding: 0.5rem 1rem;">Subscribe</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

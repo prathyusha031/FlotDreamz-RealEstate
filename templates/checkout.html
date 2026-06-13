@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Flot Dreamz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 50%;
+            margin: 50px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        .order-details, .payment-methods {
+            margin-bottom: 20px;
+        }
+        .order-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .order-item img {
+            width: 50px;
+            height: 50px;
+            margin-right: 15px;
+            border-radius: 5px;
+        }
+        .total {
+            font-size: 18px;
+            font-weight: bold;
+            text-align: right;
+            padding: 10px;
+        }
+        .payment-methods label {
+            display: block;
+            margin-bottom: 10px;
+        }
+        .confirm-btn {
+            width: 100%;
+            padding: 10px;
+            background: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 18px;
+        }
+        .confirm-btn:hover {
+            background: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Checkout</h2>
+        <div class="order-details">
+            <h3>Order Summary</h3>
+            <div class="order-item">
+                <img src="property1.jpg" alt="Property">
+                <span>Luxury Apartment - $150,000</span>
+            </div>
+            <div class="order-item">
+                <img src="property2.jpg" alt="Property">
+                <span>Modern Villa - $250,000</span>
+            </div>
+            <div class="total">Total: $400,000</div>
+        </div>
+        
+        <div class="payment-methods">
+            <h3>Payment Methods</h3>
+            <label><input type="radio" name="payment" value="credit"> Credit Card</label>
+            <label><input type="radio" name="payment" value="paypal"> PayPal</label>
+            <label><input type="radio" name="payment" value="bank"> Bank Transfer</label>
+        </div>
+        
+        <button class="confirm-btn">Confirm Order</button>
+    </div>
+</body>
+</html>

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Send OTP</title>
+</head>
+<body>
+    <h2>Enter Your Phone Number</h2>
+    <form method="POST" action="{% url 'send_otp' %}">
+        {% csrf_token %}
+        <label>Enter Your Mobile Number:</label>
+        <input type="text" name="phone_number" required>
+        <button type="submit">Send OTP</button>
+    </form>    
+</body>
+</html>

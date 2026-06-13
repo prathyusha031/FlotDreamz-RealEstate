@@ -1,0 +1,348 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Bootstrap JS Bundle (optional, for JS components) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js" crossorigin="anonymous"></script>
+    <title>{% block title %}Flot Dreamz{% endblock %}</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f9f9f9;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: hsla(120, 9.10%, 2.20%, 0.89);
+            color: white;
+            padding: 16px 0px;
+            flex-wrap: wrap;
+        }
+
+        .logo-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .logo-container a {
+            text-decoration: none;
+            color: white;
+        }
+
+        .logo-text {
+            color: white;
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        .logo {
+            font-size: 30px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            width: 40px;
+            height: auto;
+            margin-right: 10px;
+        }
+
+        .slogan {
+            font-size: 14px;
+            color: #ffffff;
+            margin-top: 3px;
+            text-align: right;
+            align-self: flex-start;
+            width: 100%;
+            margin-left: 16px;
+        }
+
+        .search-bar {
+            display: flex;
+        }
+
+        .search-bar input {
+            padding: 6px;
+            border: none;
+            border-radius: 3px;
+            width: 250px;
+        }
+
+        .search-bar button {
+            background-color: hsl(50, 53.50%, 55.30%);
+            border: none;
+            padding: 6px;
+            margin-left: 3px;
+            cursor: pointer;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        nav ul li {
+            margin: 0 10px;
+            position: relative;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            padding: 8px 10px;
+            display: block;
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 250px;
+            box-shadow: 0px 4px 8px hsl(50, 53.50%, 55.30%);
+            z-index: 1000;
+            top: 100%;
+            left: 0;
+            border-radius: 5px;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 10px;
+            display: block;
+            text-decoration: none;
+        }
+
+        .dropdown-content a:hover {
+            background-color: hsl(50, 53.50%, 55.30%);
+            color: white;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .header-icons {
+            display: flex;
+            align-items: center;
+        }
+
+        .btn {
+            background-color: hsl(50, 53.50%, 55.30%);
+            padding: 8px 15px;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        .cart {
+            position: relative;
+            color: white;
+            font-size: 22px;
+            text-decoration: none;
+            margin-left: 5px;
+        }
+
+        .order-count {
+            position: absolute;
+            top: -8px;
+            right: -10px;
+            background-color: red;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+            padding: 3px 6px;
+            border-radius: 50%;
+        }
+
+        /* Footer */
+        footer {
+            background-color: hsla(120, 9.10%, 2.20%, 0.89);
+            color: white;
+            padding: 30px;
+            margin-top: 100px;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+
+        .footer-content h3 {
+            margin-bottom: 10px;
+        }
+
+        .footer-content ul {
+            list-style: none;
+        }
+
+        .footer-content ul li {
+            margin-bottom: 5px;
+        }
+
+        .footer-content ul li a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .social-media a {
+            margin-right: 10px;
+            color: white;
+            font-size: 20px;
+        }
+
+        .payment-methods a {
+            margin-right: 15px;
+            color: white;
+            font-size: 30px;
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            nav ul {
+                flex-direction: column;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="logo-container">
+            <a href="{% url 'main' %}" class="logo">
+                <img src="{% static 'removed-background.png' %}" alt="Logo">
+                <div class="logo-text">Flot Dreamz</div>
+            </a>
+            <div class="slogan">Find. Invest. Live Your Dream.</div>
+        </div>
+
+        <div class="search-bar">
+            <input type="text" placeholder="Search for properties, projects...">
+            <button><i class="fas fa-search"></i></button>
+        </div>
+
+        <nav>
+            <ul>
+                <li><a href="https://maps.app.goo.gl/ZxcJRjdzocCw79QR6">Location</a></li>
+                <li class="dropdown">
+                    <a href="#">Properties <i class="fas fa-chevron-down"></i></a>
+                    <div class="dropdown-content">
+                        <a href="#">Buy</a>
+                        <a href="#">Sell</a>
+                        <a href="#">Commercial</a>
+                        <a href="#">Luxury Homes</a>
+                    </div>
+                </li>
+                <li><a href="{% url 'projects' %}">Projects</a></li>
+                <li><a href="{% url 'agent_list' %}">Agents</a></li>
+                <li><a href="{% url 'neighbourhoods' %}">Neighbourhoods</a></li>
+                <li><a href="{% url 'blogs' %}">Blogs/Resources</a></li>
+                <li><a href="{% url 'deal_list' %}">Deals & Discounts</a></li>
+            </ul>
+        </nav>
+
+        <div class="header-icons">
+            <a href="{% url 'login' %}" class="btn">Login/Sign-up</a>
+            <a href="{% url 'cart' %}" class="cart">
+                <i class="fas fa-shopping-cart"></i> 
+                <span class="order-count">0</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- Dynamic Content Section -->
+    {% block content %}
+    <!-- Child templates will inject content here -->
+    {% endblock %}
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="company-info">
+                <h3>Company Info</h3>
+                <ul>
+                    <li><a href="{% url 'about' %}">About Us</a></li>
+                    <li><a href="{% url 'contact' %}">Contact Us</a></li>
+                    <li><a href="{% url 'privacy_policy' %}">Privacy Policy</a></li>
+                    <li><a href="{% url 'terms_conditions' %}">Terms and Conditions</a></li>
+                </ul>
+            </div>
+
+            <div class="quick-links">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="{% url 'refund_policy' %}">Refund Policy</a></li>
+                    <li><a href="{% url 'faqs' %}">FAQs</a></li>
+                    <li><a href="{% url 'customer_support' %}">Customer Support</a></li>
+                </ul>
+            </div>
+
+            <div class="social-media">
+                <h3>Follow Us</h3>
+                <a href="https://www.facebook.com/" target="_blank"><i class="fab fa-facebook"></i></a>
+                <a href="https://twitter.com/" target="_blank"><i class="fab fa-twitter"></i></a>
+                <a href="https://www.instagram.com/cypwng_tech/" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.linkedin.com/company/cypwng-software-technologies/posts/?feedView=all" target="_blank"><i class="fab fa-linkedin"></i></a>
+            </div>
+
+            <div class="payment-methods">
+                <h3>Payment Methods</h3>
+                <a href="https://www.visa.com/" target="_blank" title="Visa"><i class="fab fa-cc-visa"></i></a>
+                <a href="https://www.mastercard.com/" target="_blank" title="Mastercard"><i class="fab fa-cc-mastercard"></i></a>
+                <a href="https://www.americanexpress.com/" target="_blank" title="American Express"><i class="fab fa-cc-amex"></i></a>
+                <a href="https://www.paypal.com/" target="_blank" title="PayPal"><i class="fab fa-cc-paypal"></i></a>
+                <p>Pay Later:
+                    <a href="https://www.getsimpl.com/" target="_blank" style="font-size: 12px; color: white; text-decoration: underline;">Simple Pay</a> |
+                    <a href="https://lazypay.in/" target="_blank" style="font-size: 12px; color: white; text-decoration: underline;">Lazy Pay</a> |
+                    Cash on Delivery Available
+                </p>
+            </div>
+
+            <div class="customer-support">
+                <h3>Customer Support</h3>
+                <p>Phone: +123 456 7890</p>
+                <p>Email: support@flotdreamz.com</p>
+                <p>Address: 8th Floor, SLN Terminus Building, Gachibowli, Hyderabad-500032</p>
+            </div>
+        </div>
+
+        <div style="text-align:center; margin-top:20px;">
+            &copy; 2025 FlotDreamz. All rights reserved.
+        </div>
+    </footer>
+</body>
+</html>

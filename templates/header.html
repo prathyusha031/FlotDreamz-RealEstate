@@ -1,0 +1,227 @@
+{% load static %}
+{% block main %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js" crossorigin="anonymous"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f9f9f9;
+        }
+
+        /* Header Section */
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: hsla(120, 9.10%, 2.20%, 0.89);
+            color: white;
+            padding: 16px 0px;
+            flex-wrap: wrap;
+        }
+        
+        .logo-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .logo-container a {
+            text-decoration: none; /* Remove underline */
+            color: white; /* Make text white */
+        }
+        
+        .logo-text {
+            color: white; /* Ensure text is white */
+            font-size: 30px;
+            font-weight: bold;
+        }
+        
+
+        .logo {
+            font-size: 30px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            width: 40px; /* Adjust the logo size */
+            height: auto;
+            margin-right: 10px; /* Space between logo and text */
+        }
+
+        .slogan { 
+            font-size: 14px;
+            color: #ffffff;
+            margin-top: 3px;
+            text-align: right; /* Aligns text to the right */
+            align-self: flex-start; 
+            width: 100%; /* Ensures it stays below the logo */
+            margin-left: 16px; /* Increase this value to move it more right */
+        }
+        
+        
+        
+
+        .search-bar {
+            display: flex;
+        }
+
+        .search-bar input {
+            padding: 6px;
+            border: none;
+            border-radius: 3px;
+            width: 250px;
+        }
+
+        .search-bar button {
+            background-color: hsl(50, 53.50%, 55.30%);
+            border: none;
+            padding: 6px;
+            margin-left: 3px;
+            cursor: pointer;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        nav ul li {
+            margin: 0 10px;
+            position: relative;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            padding: 8px 10px;
+            display: block;
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 250px;
+            box-shadow: 0px 4px 8px hsl(50, 53.50%, 55.30%);
+            z-index: 1000;
+            top: 100%;
+            left: 0;
+            border-radius: 5px;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 10px;
+            display: block;
+            text-decoration: none;
+        }
+
+        .dropdown-content a:hover {
+            background-color: hsl(50, 53.50%, 55.30%);
+            color: white;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .header-icons {
+            display: flex;
+            align-items: center;
+        }
+
+        .btn {
+            background-color: hsl(50, 53.50%, 55.30%);
+            padding: 8px 15px;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        .cart {
+            position: relative;
+            color: white;
+            font-size: 22px;
+            text-decoration: none;
+            margin-left: 5px; /* Further reduced margin */
+        }
+        
+        .order-count {
+            position: absolute;
+            top: -8px;
+            right: -10px;
+            background-color: red;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+            padding: 3px 6px;
+            border-radius: 50%;
+        }
+        
+
+    <!-- Header Section -->
+    <header>
+        <div class="logo-container">
+            <a href="/main" class="logo">
+                <img src="/static/removed-background.png" alt="Logo">
+                <div class="logo-text">Flot Dreamz</div>
+            </a>
+            <div class="slogan">Find. Invest. Live Your Dream.</div>
+        </div>
+        
+        <div class="search-bar">
+            <input type="text" placeholder="Search for properties, projects...">
+            <button><i class="fas fa-search"></i></button>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="https://maps.app.goo.gl/ZxcJRjdzocCw79QR6">Location</a></li>
+                <li class="dropdown">
+                    <a href="#">Properties <i class="fas fa-chevron-down"></i></a>
+                    <div class="dropdown-content">
+                        <a href="#">Buy</a>
+                        <a href="#">Sell</a>
+                        <a href="#">Commercial</a>
+                        <a href="#">Luxury Homes</a>
+                    </div>
+                </li>
+                <li><a href="#">Projects</a></li>
+                <li><a href="#">Agents</a></li>
+                <li><a href="#">Neighbourhoods</a></li>
+                <li><a href="#">Blogs/Resources</a></li>
+                <li><a href="#">Deals & Discounts</a></li>
+            </ul>
+        </nav>
+        <div class="header-icons">
+            <a href="/login" class="btn">Login/Sign-up</a>
+            <a href="/cart" class="cart">
+                <i class="fas fa-shopping-cart"></i> 
+                <span class="order-count">0</span>
+            </a>
+        </div>
+        
+        
+        
+    </header>
+
+
+{% endblock main %}
