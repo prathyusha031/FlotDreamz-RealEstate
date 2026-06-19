@@ -2,11 +2,10 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login 
 from django.utils import timezone
-from .models import LoginRecord  # Fixed invalid space issue
-from random import randint
+from .models import LoginRecord 
 from django.contrib import messages
 from django.contrib.auth import login as auth_login
-from .models import Profile
+
 
 
 def home(request):
@@ -54,8 +53,14 @@ def user_login(request):
         if user is not None:
             auth_login(request, user)  
 
-            # Track login time
-            login_record, created = LoginRecord.objects.get_or_create(user=user)
+            login_record, created = LoginRecord.objects.get_or_create(
+                user=user,
+                defaults={
+                 "fullname": user.first_name,
+                   "email": user.email,
+                }
+            )
+
             login_record.login_time = timezone.now()
             login_record.save()
 
@@ -65,7 +70,6 @@ def user_login(request):
 
     return render(request, "login.html")
 
-# realestate/views.py
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -131,7 +135,6 @@ def update_profile(request):
 
 from django.shortcuts import render, redirect
 from django.contrib import messages
-import os
 
 
 from .forms import PropertyForm
