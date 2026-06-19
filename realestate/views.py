@@ -67,119 +67,39 @@ def user_login(request):
 
 # realestate/views.py
 from django.shortcuts import render, redirect
-from django.core.mail import send_mail
 from django.contrib import messages
 from django.contrib.auth.models import User
-import random
-
-# Store OTPs temporarily (for production, use Redis/DB)
-otp_storage = {}
 
 def signup(request):
     if request.method == 'POST':
-        if 'send_otp' in request.POST:
-            # Step 1: Send OTP
-            email = request.POST.get('email')
-            if not email:
-                messages.error(request, "Please enter your email.")
-                return render(request, 'signup.html')
+        full_name = request.POST.get('full_name')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        confirm_password = request.POST.get('confirm_password')
 
-            otp = str(random.randint(100000, 999999))
-            otp_storage[email] = otp  # Save OTP against email
+        if not all([full_name, email, password, confirm_password]):
+            messages.error(request, "All fields are required.")
+            return render(request, 'signup.html')
 
-            # Send OTP to email
-            send_mail(
-                'Your OTP for Flot Dreamz Signup',
-                f'Your OTP is: {otp}',
-                'bailapudiprathyusha@gmail.com',  # Replace with your email
-                [email],
-                fail_silently=False,
-            )
-            messages.success(request, f'OTP has been sent to {email}')
-            return render(request, 'signup.html', {'email_sent': True, 'email_value': email})
+        if password != confirm_password:
+            messages.error(request, "Passwords do not match.")
+            return render(request, 'signup.html')
 
-        elif 'signup' in request.POST:
-            # Step 2: Register after OTP verification
-            full_name = request.POST.get('full_name')
-            email = request.POST.get('email')
-            otp_input = request.POST.get('otp')
-            mobile = request.POST.get('mobile')
-            password = request.POST.get('password')
-            confirm_password = request.POST.get('confirm_password')
+        if User.objects.filter(email=email).exists():
+            messages.error(request, "Email already registered.")
+            return render(request, 'signup.html')
 
-            if not all([full_name, email, otp_input, mobile, password, confirm_password]):
-                messages.error(request, "All fields are required.")
-                return render(request, 'signup.html')
+        User.objects.create_user(
+            username=email,
+            email=email,
+            password=password,
+            first_name=full_name
+        )
 
-            if email not in otp_storage or otp_input != otp_storage[email]:
-                messages.error(request, "Invalid or expired OTP.")
-                return render(request, 'signup.html', {'email_value': email})
-
-            if password != confirm_password:
-                messages.error(request, "Passwords do not match.")
-                return render(request, 'signup.html', {'email_value': email})
-
-            if User.objects.filter(username=email).exists():
-                messages.error(request, "User already exists.")
-                return render(request, 'signup.html')
-
-            # Create user
-            user = User.objects.create_user(username=email, email=email, password=password, first_name=full_name)
-            user.save()
-
-            # Cleanup
-            otp_storage.pop(email, None)
-            messages.success(request, "Account created successfully! Please log in.")
-            return redirect('login')
+        messages.success(request, "Account created successfully. Please login.")
+        return redirect('login')
 
     return render(request, 'signup.html')
-
-# realestate/views.py
-
-from django.http import JsonResponse
-from django.core.mail import send_mail
-import random
-
-def send_email_otp(request):
-    if request.method == "POST":
-        email = request.POST.get("email")
-        if not email:
-            return JsonResponse({"status": "fail", "message": "Email is required"}, status=400)
-
-        otp = str(random.randint(100000, 999999))
-        request.session["email_otp"] = otp
-        request.session["otp_email"] = email
-
-        subject = "Your OTP for Email Verification"
-        message = f"Your OTP for verifying your email is: {otp}"
-        from_email = None
-        recipient_list = [email]
-
-        try:
-            send_mail(subject, message, from_email, recipient_list)
-            return JsonResponse({"status": "success", "message": "OTP sent successfully"})
-        except Exception as e:
-            return JsonResponse({"status": "fail", "message": str(e)}, status=500)
-
-    return JsonResponse({"status": "fail", "message": "Invalid request method"}, status=405)
-
-from django.http import JsonResponse
-
-def verify_email_otp(request):
-    if request.method == "POST":
-        user_otp = request.POST.get("otp")
-        session_otp = request.session.get("email_otp")
-
-        if not session_otp:
-            return JsonResponse({"status": "error", "message": "No OTP found. Please request a new one."})
-
-        if user_otp == session_otp:
-            request.session["email_verified"] = True  # Optional: Set flag for further checks
-            return JsonResponse({"status": "success", "message": "OTP verified successfully!"})
-        else:
-            return JsonResponse({"status": "error", "message": "Invalid OTP. Please try again."})
-
-    return JsonResponse({"status": "error", "message": "Invalid request method."})
 
 def cart(request):
     return render(request, 'cart.html')
@@ -208,91 +128,11 @@ def update_profile(request):
 
     return redirect('profile') 
 
-def loginwithotp(request):
-    return render(request, 'loginwithotp.html')
-
 
 from django.shortcuts import render, redirect
-from django.http import JsonResponse
 from django.contrib import messages
-from twilio.rest import Client
 import os
 
-# Correct usage of environment variable names
-TWILIO_ACCOUNT_SID = os.getenv("TWILIO_ACCOUNT_SID")
-TWILIO_AUTH_TOKEN = os.getenv("TWILIO_AUTH_TOKEN")
-TWILIO_SERVICE_SID = os.getenv("TWILIO_VERIFY_SERVICE_SID")
-
-client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
-
-def otp_mobile(request):
-    if request.method == 'POST':
-        mobile = request.POST.get('mobile')
-        country_code = request.POST.get('country_code', '+91')  
-        full_mobile = country_code + mobile  
-
-        if not mobile:
-            messages.error(request, 'Please enter a mobile number.')
-            return render(request, 'otp_mobile.html')
-
-        try:
-            verification = client.verify.v2.services(TWILIO_SERVICE_SID) \
-                .verifications.create(to=full_mobile, channel="sms")
-            
-            if verification.status == "pending":
-                request.session['mobile'] = full_mobile
-                messages.success(request, 'OTP sent successfully!')
-                return redirect('verify_otp')
-            else:
-                messages.error(request, 'Failed to send OTP.')
-        except Exception as e:
-            messages.error(request, f"Error: {e}")
-
-    return render(request, 'otp_mobile.html')
-
-
-def verify_otp(request):
-    if request.method == 'POST':
-        entered_otp = request.POST.get('otp')
-        mobile = request.session.get('mobile')
-
-        if not mobile:
-            messages.error(request, "Session expired! Please request a new OTP.")
-            return redirect('otp_mobile')
-
-        try:
-            verification_check = client.verify.v2.services(TWILIO_SERVICE_SID) \
-                .verification_checks.create(to=mobile, code=entered_otp)
-
-            if verification_check.status == "approved":
-                messages.success(request, 'OTP Verified successfully!')
-                return redirect('home')
-            else:
-                messages.error(request, 'Invalid OTP!')
-                return redirect('verify_otp')
-
-        except Exception as e:
-            messages.error(request, f"Error: {e}")
-
-    return render(request, 'verify_otp.html')
-
-from django.shortcuts import redirect
-
-def send_otp(request):
-    return redirect('otp_mobile')  # Or whatever makes sense for your flow
-
-
-def add_property(request):
-    if request.method == 'POST':
-        form = PropertyForm(request.POST, request.FILES)
-        if form.is_valid():
-            property = form.save(commit=False)
-            property.posted_by = request.user
-            property.save()
-            return redirect('property_list')  # or your homepage
-    else:
-        form = PropertyForm()
-    return render(request, 'add_property.html', {'form': form})
 
 from .forms import PropertyForm
 
@@ -308,10 +148,6 @@ def add_property(request):
 
 from django.shortcuts import render
 from .models import Property
-
-def property_list(request):
-    properties = Property.objects.all()
-    return render(request, 'property_list.html', {'properties': properties})
 
 from django.shortcuts import render
 
