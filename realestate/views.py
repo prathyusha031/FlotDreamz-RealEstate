@@ -5,11 +5,23 @@ from django.utils import timezone
 from .models import LoginRecord 
 from django.contrib import messages
 from django.contrib.auth import login as auth_login
-
+from .models import Property, Inquiry, Agent, Blog, Deal
 
 
 def home(request):
-    return render(request, 'home.html')
+    properties = Property.objects.all()[:3]
+    agents = Agent.objects.all()[:3]
+    blogs = Blog.objects.all().order_by('-created_at')[:3]
+    deals = Deal.objects.all()[:2]
+
+    context = {
+        'properties': properties,
+        'agents': agents,
+        'blogs': blogs,
+        'deals': deals,
+    }
+
+    return render(request, 'home.html', context)
 
 def about(request):
     return render(request, 'about.html')

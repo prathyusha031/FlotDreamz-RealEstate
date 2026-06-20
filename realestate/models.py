@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
 class LoginRecord(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     fullname = models.CharField(max_length=255)
@@ -17,6 +18,7 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.user.username
+
 
 class Property(models.Model):
     PROPERTY_TYPE_CHOICES = [
@@ -37,9 +39,13 @@ class Property(models.Model):
         default='Buy'
     )
 
+    class Meta:
+        verbose_name_plural = "Properties"
+
     def __str__(self):
         return self.title
-    
+
+
 class Inquiry(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField()
@@ -47,8 +53,12 @@ class Inquiry(models.Model):
     property = models.ForeignKey(Property, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        verbose_name_plural = "Inquiries"
+
     def __str__(self):
         return f"Inquiry by {self.name}"
+
 
 class Agent(models.Model):
     name = models.CharField(max_length=100)
@@ -57,7 +67,8 @@ class Agent(models.Model):
 
     def __str__(self):
         return self.name
-    
+
+
 class Blog(models.Model):
     title = models.CharField(max_length=200)
     content = models.TextField()
@@ -66,7 +77,8 @@ class Blog(models.Model):
 
     def __str__(self):
         return self.title
-    
+
+
 class Deal(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField()

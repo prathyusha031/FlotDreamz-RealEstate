@@ -286,7 +286,49 @@
 
     <!-- Dynamic Content Section -->
     {% block content %}
-    <!-- Child templates will inject content here -->
+    <section class="container my-5">
+    <h2 class="text-center mb-4">Featured Properties</h2>
+
+```
+<div class="row">
+    {% for property in properties %}
+    <div class="col-md-4 mb-4">
+        <div class="card shadow-lg border-0">
+            <img src="{{ property.image.url }}"
+                 class="card-img-top"
+                 style="height:250px; object-fit:cover;">
+
+            <div class="card-body">
+                <h5 class="card-title">{{ property.title }}</h5>
+
+                <p>
+                    <strong>Location:</strong>
+                    {{ property.location }}
+                </p>
+
+                <p>
+                    <strong>Price:</strong>
+                    ₹{{ property.price }}
+                </p>
+
+                <p>
+                    <strong>Type:</strong>
+                    {{ property.property_type }}
+                </p>
+
+                <a href="{% url 'property_detail' property.id %}"
+                   class="btn btn-dark w-100">
+                    View Details
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+```
+
+</section>
+
     {% endblock %}
 
     <!-- Footer -->
