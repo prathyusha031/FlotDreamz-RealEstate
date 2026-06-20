@@ -14,7 +14,7 @@ class Command(BaseCommand):
                 price=8500000,
                 description="Luxury 4BHK villa with private garden and modern amenities.",
                 property_type="Luxury",
-                image="property_images/villa.jpg"
+                image="property_images/Luxury_Villa.png"
             )
 
             Property.objects.create(
@@ -23,7 +23,7 @@ class Command(BaseCommand):
                 price=3200000,
                 description="Premium apartment in a prime residential area.",
                 property_type="Buy",
-                image="property_images/apartment.jpg"
+                image="property_images/2BHK_.jpeg"
             )
 
             Property.objects.create(
@@ -32,7 +32,7 @@ class Command(BaseCommand):
                 price=12000000,
                 description="Commercial office space in a business district.",
                 property_type="Commercial",
-                image="property_images/office.jpg"
+                image="property_images/Office_.jpeg"
             )
 
         if Agent.objects.count() == 0:
