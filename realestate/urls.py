@@ -27,7 +27,7 @@ urlpatterns = [
     path('properties/', views.property_list, name='property_list'),
     path('properties/<int:pk>/', views.property_detail, name='property_detail'),
     path("check-data/", views.check_data, name="check_data"),
-
+    
     # Agents
     path('agents/', views.agent_list, name='agent_list'),
 
