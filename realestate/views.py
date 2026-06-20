@@ -6,6 +6,16 @@ from .models import LoginRecord
 from django.contrib import messages
 from django.contrib.auth import login as auth_login
 from .models import Property, Inquiry, Agent, Blog, Deal
+from django.http import HttpResponse
+from .models import Property, Agent, Blog, Deal
+
+def check_data(request):
+    return HttpResponse(
+        f"Properties: {Property.objects.count()}<br>"
+        f"Agents: {Agent.objects.count()}<br>"
+        f"Blogs: {Blog.objects.count()}<br>"
+        f"Deals: {Deal.objects.count()}"
+    )
 
 
 def home(request):
